@@ -3,7 +3,6 @@ import os
 import subprocess
 
 from celery import Celery
-from celery_test.scanners import ClamScan
 from celery_test.settings import *
 
 
@@ -29,7 +28,7 @@ def validate_file(filepath):
         os.unlink(filepath)
         return 'Invalid file type.', 'error'
 
-    scanner = ClamScan(filepath)
+    scanner = ACTIVE_SCANNER(filepath)
 
     if not scanner.evaluate_result():
         os.unlink(filepath)
