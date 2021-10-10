@@ -1,3 +1,7 @@
+from celery_test.scanners import ClamScan
+
+
+ACTIVE_SCANNER = ClamScan
 APP_LABEL = 'celery_test_app'
 BACKEND_URL = 'redis://localhost'
 BROKER_URL = 'redis://localhost'
