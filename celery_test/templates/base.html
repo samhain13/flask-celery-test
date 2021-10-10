@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  </head>
+  
+  <body>
+    <h1>{{ page_title }}</h1>
+
+    {% with messages=get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+      <ul id="messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('check_task_blocked_wrapper') }}" method="post" enctype="multipart/form-data">
+      <fieldset>
+        <label for="uploaded-file">File</label>
+        <input type="file" id="uploaded-file" name="uploaded-file">
+        <br>
+        <label for="uploaded-description">Description</label>
+        <input type="text" id="uploaded-description" name="uploaded-description">
+      </fieldset>
+      <fieldset>
+        <input type="submit" value="Upload File">
+      </fieldset>
+    </form>
+  </body>
+</html>

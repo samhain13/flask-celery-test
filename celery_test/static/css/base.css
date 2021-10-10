@@ -1,0 +1,24 @@
+body {
+    font-family: sans-serif;
+}
+
+fieldset {
+    border: 0px;
+    line-height: 1.8em;
+}
+
+label {
+    display: inline-block;
+    width: 15em;
+}
+
+#messages {
+    list-style-type: none;
+    padding-left: 0px;
+    margin-left: 0px;
+}
+    #messages li { padding: 1em 2em; }
+
+    #messages li.success { background: rgba(0,255,0,0.2); }
+    #messages li.error { background: rgba(255,0,0,0.2); }
+    #messages li.error { background: rgba(200,200,0,0.2); }
