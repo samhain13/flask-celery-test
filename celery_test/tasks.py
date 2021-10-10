@@ -3,6 +3,7 @@ import os
 import subprocess
 
 from celery import Celery
+from celery_test.scanners import ClamScan
 from celery_test.settings import *
 
 
@@ -28,7 +29,9 @@ def validate_file(filepath):
         os.unlink(filepath)
         return 'Invalid file type.', 'error'
 
-    if not _file_infected(filepath):
+    scanner = ClamScan(filepath)
+
+    if not scanner.evaluate_result():
         os.unlink(filepath)
         return 'File may be infected with a virus.', 'error'
 
@@ -42,26 +45,3 @@ def _file_valid(file_header, file_mimetype):
         if file_header.startswith(header):
             return True
     return False
-
-
-def _file_infected(filepath):
-    '''Call ClamScan on the file and see if it passes.'''
-
-    try:
-        proc = subprocess.run(['clamscan', filepath], capture_output=True)
-    except FileNotFoundError:
-        print('Antivirus is not installed.')
-        return False
-
-    result = proc.stdout
-    if type(result) is bytes:
-        result = result.decode('utf-8')
-
-    if DEBUG:
-        print(filepath)
-        print(result)
-
-    if not result.startswith(f'{filepath}: OK'):
-        return False
-
-    return True

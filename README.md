@@ -20,7 +20,7 @@ A project for learning Flask, Celery, and a refresher on decorators and other Py
 ## Notes
 1. the Celery app is configured to have a backend so the Flask app decorators can fetch the results from it
 2. the Celery broker and backend are defined as "redis://localhost"
-3. file validation happens in 3 stages: a) the mimetype must be defined as a key in settings.VALID_FILE_TYPE_HEADERS; b) the file header/signature must start with one of the strings defined in the matching settings.VALID_FILE_TYPE_HEADERS item list values; c) virus scanning is made specifically for ClamAV, I would have wanted to make it more flexible but I have no idea how other scanners format their results
+3. file validation happens in 3 stages: a) the mimetype must be defined as a key in settings.VALID_FILE_TYPE_HEADERS; b) the file header/signature must start with one of the strings defined in the matching settings.VALID_FILE_TYPE_HEADERS item list values; c) virus scanning is made specifically for ClamAV but that is based on a class that can be overridden for other scanners in scanners.py
 4. files that don't pass all 3 stages are deleted via os.unlink; valid files are kept in the specified UPLOAD_FOLDER in settings
 5. the file description, as of this writing, goes nowhere; no databases are used in this application
 
