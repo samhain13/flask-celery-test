@@ -20,7 +20,7 @@ def check_task_status(func):
                 response.set_cookie(CELERY_TASK_CHECK_COOKIE, expires=0)
                 return response
             else:
-                flash('Your background task is still running.', 'info')
+                flash('Your background task is running.', 'info')
         return func(*args, **kwargs)
     return check_task_status_wrapper
 

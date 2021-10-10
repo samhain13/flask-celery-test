@@ -41,11 +41,10 @@ def upload():
     filename = secure_filename(uploaded_file.filename)
     filepath = os.path.join(app.config['upload_folder'], filename)
     uploaded_file.save(filepath)
-    
+
     task = validate_file.delay(filepath)
     response.set_cookie(CELERY_TASK_CHECK_COOKIE, task.task_id)
 
-    flash('Working on your upload...', 'success')
     return response
 
 
