@@ -1,6 +1,5 @@
 import magic
 import os
-import subprocess
 
 from celery import Celery
 from celery_test.settings import *
@@ -16,25 +15,25 @@ app = Celery(
 @app.task
 def validate_file(filepath):
     if not os.path.isfile(filepath):
-        return 'File not found.', 'error'
+        return TASK_MESSAGES['file_not_found']
     file_header = magic.from_file(filepath)
     file_mimetype = magic.from_file(filepath, mime=True)
 
     if file_mimetype not in VALID_FILE_TYPE_HEADERS:
         os.unlink(filepath)
-        return 'Invalid file type.', 'error'
+        return TASK_MESSAGES['file_invalid']
 
     if not _file_valid(file_header, file_mimetype):
         os.unlink(filepath)
-        return 'Invalid file type.', 'error'
+        return TASK_MESSAGES['file_invalid']
 
     scanner = ACTIVE_SCANNER(filepath)
 
     if not scanner.evaluate_result():
         os.unlink(filepath)
-        return 'File may be infected with a virus.', 'error'
+        return TASK_MESSAGES['file_infected']
 
-    return 'File validation was successful.', 'success'
+    return TASK_MESSAGES['file_valid']
 
 
 def _file_valid(file_header, file_mimetype):

@@ -1,6 +1,6 @@
 from flask import flash, redirect, request
 
-from celery_test.settings import CELERY_TASK_CHECK_COOKIE
+from celery_test.settings import CELERY_TASK_CHECK_COOKIE, TASK_MESSAGES
 from celery_test.tasks import app as celery_app
 
 
@@ -20,7 +20,7 @@ def check_task_status(func):
                 response.set_cookie(CELERY_TASK_CHECK_COOKIE, expires=0)
                 return response
             else:
-                flash('Your background task is running.', 'info')
+                flash(*TASK_MESSAGES['task_running'])
         return func(*args, **kwargs)
     return check_task_status_wrapper
 
@@ -33,7 +33,7 @@ def check_task_blocked(func):
     def check_task_blocked_wrapper(*args, **kwargs):
         task_id = request.cookies.get(CELERY_TASK_CHECK_COOKIE)
         if task_id is not None:
-            flash('You still have a pending task, try again later.', 'error')
+            flash(*TASK_MESSAGES['task_pending'])
             return redirect('/')
         return func(*args, **kwargs)
     return check_task_blocked_wrapper
