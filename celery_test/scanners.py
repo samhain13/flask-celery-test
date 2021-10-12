@@ -1,4 +1,3 @@
-import os
 import subprocess
 
 
@@ -14,8 +13,6 @@ class VirusScanner:
     scan_result = ''
 
     def __init__(self, filepath, debug=False):
-        if not os.path.isfile(filepath):
-            raise FileNotFoundError(f'{filepath} doesn\'t exist')
         self.filepath = filepath
         self.debug = debug
         self.begin_scan()
